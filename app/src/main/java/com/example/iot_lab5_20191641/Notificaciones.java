@@ -10,7 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class PantallaPerfil extends AppCompatActivity {
+public class Notificaciones extends AppCompatActivity {
 
     private ImageView back2;
 
@@ -19,12 +19,15 @@ public class PantallaPerfil extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_pantalla_perfil);
+        setContentView(R.layout.activity_notificaciones);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+
         back2 = findViewById(R.id.back2);
         back2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,5 +35,7 @@ public class PantallaPerfil extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
 }

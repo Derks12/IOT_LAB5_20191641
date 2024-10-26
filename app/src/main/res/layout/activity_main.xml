@@ -32,7 +32,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/logout"
+                android:id="@+id/notis"
                 android:layout_width="22dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center|end"
@@ -80,7 +80,7 @@
 
 
                 <Button
-                    android:id="@+id/repartidores"
+                    android:id="@+id/comidas"
                     android:layout_width="170dp"
                     android:layout_height="180dp"
                     android:layout_row="0"
@@ -110,7 +110,7 @@
 
 
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -180,7 +180,8 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Meta de calorías diarias" />
+                android:text="Meta de calorías diarias"
+                android:textSize="20sp" />
 
             <ProgressBar
                 android:id="@+id/progressBar"

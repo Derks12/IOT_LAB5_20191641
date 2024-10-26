@@ -1,6 +1,8 @@
 package com.example.iot_lab5_20191641;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Comidas extends AppCompatActivity {
+
+    private ImageView back2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +25,16 @@ public class Comidas extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        back2 = findViewById(R.id.back2);
+        back2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+
     }
 }
