@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">IOT_LAB5_20191641</string>
+    <string-array name="elementos">
+        <item>Poco o ningún ejercicio</item>
+        <item>Ejercicio ligero</item>
+        <item>Ejercicio moderado</item>
+        <item>Ejercicio fuerte</item>
+        <item>Ejercicio muy fuerte</item>
+    </string-array>
 </resources>
