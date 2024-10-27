@@ -84,6 +84,10 @@ public class Comidas extends AppCompatActivity {
         int calorias = Integer.parseInt(caloriasStr);
         totalCaloriasConsumidas += calorias;
         totalCalorias.setText(String.valueOf(totalCaloriasConsumidas));
+        SharedPreferences sharedPreferences = getSharedPreferences("user_preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("total_calorias_consumidas", totalCaloriasConsumidas);
+        editor.apply();
     }
 
     private void agregarComidaHarcodeada() {
@@ -102,7 +106,13 @@ public class Comidas extends AppCompatActivity {
         if (comida5.isChecked()) {
             totalCaloriasConsumidas += 155;
         }
+
         totalCalorias.setText(String.valueOf(totalCaloriasConsumidas));
+
+        SharedPreferences sharedPreferences = getSharedPreferences("user_preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("total_calorias_consumidas", totalCaloriasConsumidas);
+        editor.apply();
     }
 
 }
