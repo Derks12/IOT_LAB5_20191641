@@ -1,6 +1,14 @@
 package com.example.iot_lab5_20191641;
 
+import static android.Manifest.permission.POST_NOTIFICATIONS;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +18,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -18,12 +29,14 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class Comidas extends AppCompatActivity {
 
+    String channelId = "channelDefaultPri";
     private ImageView back2;
     private TextInputEditText textFieldNombreComida, textFieldCalorias;
     private CheckBox comida1, comida2, comida3, comida4, comida5;
     private Button buttonRegistrarComida, buttonRegistrarPredeterminada;
     private TextView totalCalorias, caloriasRecomendadas;
     private int totalCaloriasConsumidas = 0;
+    private float caloriasNecesarias = 0;
 
 
     @Override
@@ -36,6 +49,8 @@ public class Comidas extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        createNotificationChannel2();
 
         back2 = findViewById(R.id.back2);
         back2.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +75,8 @@ public class Comidas extends AppCompatActivity {
         caloriasRecomendadas = findViewById(R.id.caloriasRecomendadas);
 
         SharedPreferences sharedPreferences = getSharedPreferences("user_preferences", MODE_PRIVATE);
-        float dailyCaloricNeeds = sharedPreferences.getFloat("calorias_diarias_necesarias", 0);
-        caloriasRecomendadas.setText(String.valueOf(dailyCaloricNeeds));
+        caloriasNecesarias = sharedPreferences.getFloat("calorias_diarias_necesarias", 0);
+        caloriasRecomendadas.setText(String.valueOf(caloriasNecesarias));
 
         buttonRegistrarComida.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +93,34 @@ public class Comidas extends AppCompatActivity {
         });
     }
 
+    public void createNotificationChannel2() {
+        //android.os.Build.VERSION_CODES.O == 26
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Canal notificaciones default",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Canal para notificaciones con prioridad default");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+            askPermission();
+        }
+    }
+
+    public void askPermission(){
+        //android.os.Build.VERSION_CODES.TIRAMISU == 33
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                ActivityCompat.checkSelfPermission(this, POST_NOTIFICATIONS) ==
+                        PackageManager.PERMISSION_DENIED) {
+
+            ActivityCompat.requestPermissions(Comidas.this,
+                    new String[]{POST_NOTIFICATIONS},
+                    101);
+        }
+    }
+
+
+
+
     private void agregarComida() {
         String caloriasStr = textFieldCalorias.getText().toString();
 
@@ -88,6 +131,10 @@ public class Comidas extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("total_calorias_consumidas", totalCaloriasConsumidas);
         editor.apply();
+
+        if (totalCaloriasConsumidas > caloriasNecesarias) {
+            showNotification((int) (totalCaloriasConsumidas - caloriasNecesarias));
+        }
     }
 
     private void agregarComidaHarcodeada() {
@@ -113,6 +160,28 @@ public class Comidas extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("total_calorias_consumidas", totalCaloriasConsumidas);
         editor.apply();
+
+        if (totalCaloriasConsumidas > caloriasNecesarias) {
+            showNotification((int) (totalCaloriasConsumidas - caloriasNecesarias));
+        }
+    }
+
+    private void showNotification(int calorias) {
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.mipmap.ic_logo)
+                .setContentTitle("Alerta de calorías")
+                .setContentText("Has registrado un exceso en la cantidad de calorías diarias de " + calorias + " calorías.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(1, builder.build());
+        }
     }
 
 }
