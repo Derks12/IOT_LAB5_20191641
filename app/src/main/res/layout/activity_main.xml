@@ -134,9 +134,10 @@
                         android:hint="Nombre de la actividad">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputEditTextNombre"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="text" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,6 +149,7 @@
                         android:hint="Calorías">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputEditTextCalorias"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number" />

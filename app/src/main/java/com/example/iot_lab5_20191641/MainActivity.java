@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         notis = findViewById(R.id.notis);
         progressBar = findViewById(R.id.progressBar);
         caloriasRestantes = findViewById(R.id.caloriasRestantes);
-        textInputEditTextCalorias = findViewById(R.id.textFieldAltura).findViewById(com.google.android.material.R.id.textinput_placeholder);
+        textView6 = findViewById(R.id.textView6);
+        textInputEditTextCalorias = findViewById(R.id.textFieldAltura).findViewById(com.google.android.material.R.id.textinput_placeholder); //acá hay problemas con jalar el nombre, la solución que busqué no funciona
         textInputEditTextActividad = findViewById(R.id.textFieldPeso).findViewById(com.google.android.material.R.id.textinput_placeholder);
         buttonRegistrarActividad = findViewById(R.id.buttonRegistrarActividad);
 
